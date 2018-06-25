@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load myfilters %}
+
+{% block content %}
+
+
+    {{ value|linebreaks }}
+    <div class="scenario_instructions text-center">
+       <h3>
+           {{ task.individual_price_level_prompt }}
+       </h3> <br/>
+        <span class="price_level">
+        {{ task.individual_price_level }}
+        </span>
+    </div>
+    <br/>
+
+    <form action="/task/process_form" method="post" enctype="multipart/form-data" class="text-center">
+        {% csrf_token %}
+        {{ quantity_response_form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ quantity_response_form.quantity.errors }}
+{#            {{ quantity_response_form.quantity.label_tag }}#}
+            {{ quantity_response_form.quantity|addclass:'col-sm-3 col-md-2 col-lg-2' }}
+            {{ quantity_response_form.quantity.label }}
+            <span class="helptext">{{ quantity_response_form.quantity.help_text }}</span>
+        </div><br/>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+<br/>
+{#    <h3>final</h3>#}
+{#    <form name='quantity_response_form' action="/task/process_form" method="POST" enctype="multipart/form-data">#}
+{#    {% csrf_token %}#}
+{#        <div class="text-muted" style="font-size: 1rem;">#}
+{#                {{ quantity_response_form.as_p }} {{ quantity_response_form.label }}#}
+{#        </div>#}
+{#    <br/>#}
+{#        <button type="submit" class="btn btn-primary">Next</button>#}
+{#    {% for error in field.errors %}#}
+{#    <p>{{ error|escape }}</p>#}
+{#    {% endfor %}#}
+{#        <input type="submit" class="btn-dark" value="Ready to Proceed" />#}
+{#<button type="button" class="btn btn-primary">Primary</button>#}
+{#<button class="btn btn-dark">button</button>#}
+{#<button type="button" class="btn btn-secondary">Secondary</button>#}
+{#<button type="button" class="btn btn-success">Success</button>#}
+{#<button type="button" class="btn btn-danger">Danger</button>#}
+{#<button type="button" class="btn btn-warning">Warning</button>#}
+{#<button type="button" class="btn btn-info">Info</button>#}
+{#<button type="button" class="btn btn-light">Light</button>#}
+{#<button type="button" class="btn btn-dark">Dark</button>#}
+
+    {#        <input type="submit" value="next">#}
+{#    </form>#}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{#{% if not show_questions %}#}
+{#<h1 class="task_instructions_title">{{ task.task_title }}</h1>#}
+{#<br/>#}
+{#<span class="scenario_instructions">#}
+{#    {{ task.scenario_instructions|linebreaksbr }}#}
+{#</span>#}
+{#{% if task.drink_amounts_list %}#}
+{#    <h4>#}
+{#    {{ task.available_amounts_header }}#}
+{#    </h4>#}
+{#        <ul class="item_amount_list">#}
+{#        {% for item in task.drink_amounts_list %}#}
+{#        <li class="item_amount_list_item">{{ item }}</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#{% endif %}#}
+{#<br/>#}
+{#<span class="scenario_instructions">#}
+{#{{ task.post_instructions }}#}
+{#</span>#}
+{#<br/>#}
+{#<form action="/begin_task" method="get">#}
+{#    <input type="submit" value="Ready to Proceed" />#}
+{#</form>#}
+{#<br/>#}
+{#{% endif %}#}

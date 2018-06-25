@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+        <div class="main_dash">
+{#            <h1>Greetings {{ greeting_name }}</h1>#}
+            <h2>Dashboard</h2>
+            <hr/>
+            <br/>
+
+            <div class="task_form">
+
+                {% include 'task_question_form.html' %}
+            </div>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{%  extends "base.html" %}
+
+{% block content %}
+    <div class="col-sm-10">
+<br/>
+<h2>You're all done</h2>
+    <form action="make_csv" method="get" >
+    <button type="submit" class="btn btn-success col-sm-4 col-md-4">Download CSV</button>
+    </form>
+
+{#    <button type="button" onclick="function toggleShowResults() {#}
+{#$('#results').toggle();#}
+{#    }#}
+{#    toggleShowResults()" class="btn btn-success col-sm-5 col-md-4">Show / Hide results</button>#}
+</div><br/>
+<div id='results' class="col-12">
+    <div class="results-left col-sm-5 col-md-5">
+        <h3>Raw Data</h3>
+        <table class="table results_table">
+            <thead>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </thead>
+            {% for trial in data %}
+            <tr>
+                <td>{{ trial.0 }}</td>
+                <td>{{ trial.1 }}</td>
+                <td>{{ trial.2 }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+    <div class="results-right col-sm-6 col-md-6">
+        <h4>Start timestamp: {{ start_timestamp }}</h4>
+        <h4>End timestamp: {{ end_timestamp }}</h4>
+        <h4>Researcher email: {{ researcher_email }}</h4>
+        <h4>Participant ID: {{ participant_id }}</h4>
+        <br/>
+        <h3>Demand Indices</h3>
+        <table class="table results_table">
+            <tr>
+                <td>Intensity:</td>
+                <td>{{ indices.intensity }}</td>
+            </tr>
+            <tr>
+                <td>Omax:</td>
+                <td>{{ indices.omax }}</td>
+            </tr>
+            <tr>
+                <td>Pmax:</td>
+                <td>{{ indices.pmax }}</td>
+            </tr>
+            <tr>
+                <td>Breakpoint: </td>
+                <td>{{ indices.breakpoint }}</td>
+            </tr>
+            <tr>
+                <td>Warnings:</td>
+                <td></td>
+            </tr>
+                {% for warning in indices.data_warnings %}
+            <tr class="alert alert-danger">
+                <td>*{{ warning.0 }}:</td>
+                <td>{{ warning.1 }}</td>
+            </tr>
+                {% endfor %}
+        </table>
+                <br/>
+                <br/>
+            <p>
+                *NOTE: Current Pmax value is the FIRST price associated with Omax (i.e., in the event of multiple Omax values, Pmax is the price associated with the first occurence of Omax)
+            </p>
+    </div>
+</div>
+    <br/>
+
+{% endblock %}
