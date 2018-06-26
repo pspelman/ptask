@@ -132,6 +132,10 @@ def task_complete_view(request):
         end_timestamp = time()
         request.session['end_timestamp'] = end_timestamp
 
+    if 'researcher_email' not in request.session:
+        request.session['researcher_email'] = 'research@philspelman.com'
+        request.session.modified = True
+
     raw_task_results = process_raw_data(request.session)
     results_indices = get_results_indices(raw_task_results)
     request.session['raw_data'] = raw_task_results['raw_tuples']
@@ -175,6 +179,7 @@ def manual_input(request):
     if not researcher_email or researcher_email == "":
         request.session['researcher_email'] = 'research@philspelman.com'
         researcher_email = 'research@philspelman.com'
+        request.session.modified = True
     if not participant_id or participant_id == "":
         participant_id = 'none'
     return begin_task_with_url_params(request, researcher_email, participant_id)
