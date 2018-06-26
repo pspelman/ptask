@@ -154,13 +154,13 @@ def logout_view(request):
     request.session.flush()
     clear_session(request)
     request.session.modified = True
-    return redirect('/')
+    return redirect('/research/')
 
 
 def clear_session(request):
     request.session.flush()
     request.session['initiated'] = False
-    return redirect('/research/task')
+    return redirect('/research/')
 
     # to delete keys but keep the user logged in
     # for key in request.session.keys():
