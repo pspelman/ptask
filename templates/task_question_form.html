@@ -15,7 +15,7 @@
     </div>
     <br/>
 
-    <form action="/task/process_form" method="post" enctype="multipart/form-data" class="text-center">
+    <form action="/task/process_form/" method="post" enctype="multipart/form-data" class="text-center">
         {% csrf_token %}
         {{ quantity_response_form.non_field_errors }}
         <div class="fieldWrapper">

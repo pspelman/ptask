@@ -62,7 +62,7 @@ def task_view(request):
     next_unanswered_question = get_next_unanswered_question(request.session)
     if next_unanswered_question == "DONE":
         # print "Task is done...redirect to completion"
-        return redirect('/completion')
+        return redirect('/research/completion')
 
     # if it's not done, show the next question
     context = get_task_question_context(request)
@@ -96,7 +96,7 @@ def begin_task(request):
     # reached begin task...test to see if task was already started
     request.session['in_progress'] = True
     request.session.modified = True
-    return redirect('/task_view')
+    return redirect('/research/task_view')
 
 
 def process_form_data(request):
@@ -111,14 +111,14 @@ def process_form_data(request):
             #            ' need to save to session'.format(next_unanswered_question, response_quant)
             request.session['response_key'][next_unanswered_question]['0'] = response_quant
             request.session.modified = True
-            return redirect('/task_view')
+            return redirect('/research/task_view')
 
         else:
             context = get_task_question_context(request)
             # return render(request, 'task_question_form.html', {'quantity_response_form': quantity_response_form})
             return render(request, 'task_question_form.html', context)
     else:
-        return redirect('/task_view')
+        return redirect('/research/task_view')
 
 
 # TODO: EMAIL the results
@@ -160,7 +160,7 @@ def logout_view(request):
 def clear_session(request):
     request.session.flush()
     request.session['initiated'] = False
-    return redirect('/task')
+    return redirect('/research/task')
 
     # to delete keys but keep the user logged in
     # for key in request.session.keys():
