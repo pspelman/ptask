@@ -136,6 +136,10 @@ def task_complete_view(request):
         request.session['researcher_email'] = 'research@philspelman.com'
         request.session.modified = True
 
+    if 'participant_id' not in request.session:
+        request.session['participant_id'] = 'none'
+        request.session.modified = True
+
     raw_task_results = process_raw_data(request.session)
     results_indices = get_results_indices(raw_task_results)
     request.session['raw_data'] = raw_task_results['raw_tuples']
