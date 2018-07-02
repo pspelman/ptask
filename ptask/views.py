@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from time import sleep, time
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template import loader
 
@@ -11,6 +11,10 @@ from apt_logic import get_results_indices, process_raw_data
 from forms import QuantityResponseForm
 from methods import *
 
+
+def url_redirect(request, destination):
+    print "destination: " + destination
+    return HttpResponseRedirect("/" + destination)
 
 # Handle 404 Errors
 # @param request WSGIRequest list with all HTTP Request
@@ -194,7 +198,7 @@ def begin_task_with_url_params(request, researcher_email='research@philspelman.c
     request.session['researcher_email'] = researcher_email
     # print "researcher email: {}".format(researcher_email)
     request.session.modified = True
-    return redirect("/instructions")
+    return redirect("/research/instructions")
 
 
 # in_progress redirects here

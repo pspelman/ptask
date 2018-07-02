@@ -1,14 +1,24 @@
 import StringIO
 import csv
-
+from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
-
 from methods import make_JSON
 
 
 def send_results(request):
     participant_id = request.session['participant_id']
     researcher_email = request.session['researcher_email']
+
+
+    email = EmailMessage(
+        'Hello',
+        'Body goes here',
+        'from@example.com',
+        ['to1@example.com', 'to2@example.com'],
+        ['bcc@example.com'],
+        reply_to=['another@example.com'],
+        headers={'Message-ID': 'foo'},
+    )
 
     # send_mail(
     #     'Test results',

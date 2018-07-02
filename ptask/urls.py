@@ -18,25 +18,35 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 
 import views
+
 from data_management import send_results, make_csv
+from ptask import task_urls
+
 favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
+# from urls import urlpatterns
 
 
 urlpatterns = [
+    # url(r'^research/', urlpatterns),
+    url(r'^research/$', include(task_urls)),
+    # url(r'^research/(?P<destination>.*)/$', views.url_redirect),
+    url(r'^research/', include(task_urls)),
+    # url(r'^/research/(?P<destination>.*)/$', views.url_redirect),
+    url(r'^/research/', include(task_urls)),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.welcome_vew),
-    url(r'^instructions', views.instructions_view),
-    url(r'^begin_task', views.begin_task),
-    url(r'^task_view', views.task_view),
-    url(r'^process_form', views.process_form_data),
-    url(r'^completion', views.task_complete_view),
-    url(r'^logout', views.logout_view),
-    url(r'^(?P<researcher_email>[0-9]+)/(begin_task_with_url_params)', views.begin_task_with_url_params),
-    url(ur'^task/(?P<researcher_email>.*)/$', views.begin_task_with_url_params),
-    url(ur'^task/(?P<researcher_email>.*)/(?P<participant_id>[0-9]+)', views.begin_task_with_url_params),
-    url(ur'^task/?researcher_email=(?P<researcher_email>.*)&participant_id=(?P<participant_id>[0-9]+)',
-        views.begin_task_with_url_params),
-    url(ur'^task/manual_input', views.manual_input),
+    # url(r'^$', views.welcome_vew),
+    # url(r'^instructions', views.instructions_view),
+    # url(r'^begin_task', views.begin_task),
+    # url(r'^task_view', views.task_view),
+    # url(r'^process_form', views.process_form_data),
+    # url(r'^completion', views.task_complete_view),
+    # url(r'^logout', views.logout_view),
+    # url(r'^(?P<researcher_email>[0-9]+)/(begin_task_with_url_params)', views.begin_task_with_url_params),
+    # url(ur'^task/(?P<researcher_email>.*)/$', views.begin_task_with_url_params),
+    # url(ur'^task/(?P<researcher_email>.*)/(?P<participant_id>[0-9]+)', views.begin_task_with_url_params),
+    # url(ur'^task/?researcher_email=(?P<researcher_email>.*)&participant_id=(?P<participant_id>[0-9]+)',
+    #     views.begin_task_with_url_params),
+    # url(ur'^task/manual_input', views.manual_input),
     url(r'^favicon\.ico$', favicon_view),
     url(r'send_results', send_results, name='send_results'),
     url(r'make_csv', make_csv, name='make_csv'),
