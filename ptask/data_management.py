@@ -37,8 +37,8 @@ def send_results(request):
         results_email = EmailMessage(message_subject, message_body, message_from_email_field, [to_email])
         results_email.attach(results_file_name, results_csv.getvalue(), 'text/csv')
 
-        # Done: re-enable email when ready
-        results_email.send(False)
+        # TODO: re-enable email when ready
+        # results_email.send(False)
 
         request.session['email_sent'] = True
         request.session.modified = True

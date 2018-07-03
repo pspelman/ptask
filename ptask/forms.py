@@ -27,7 +27,6 @@ class QuantityResponseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(QuantityResponseForm, self).__init__(*args, **kwargs)
-
         self.fields['quantity'].widget.attrs= {'autofocus':'autofocus', 'size':'3'}
         # self.fields['quantity'].widget.attrs['autofocus'] = u'autofocus'
 

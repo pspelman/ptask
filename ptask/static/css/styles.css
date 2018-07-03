@@ -107,7 +107,7 @@ footer {
 }
 
 .price_level{
-    margin-left: 4%;
+    /*margin-left: 4%;*/
     font-size: 3rem;
 }
 
@@ -145,3 +145,8 @@ footer {
     padding-bottom: 0px !important;
     overflow:hidden;
   }
+
+.results_controls {
+    margin-top: .2rem;
+    margin-bottom: .2rem;
+}

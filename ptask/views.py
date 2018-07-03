@@ -42,42 +42,42 @@ def welcome_vew(request):
 
 def instructions_view(request):
     # print "Instructions View: auto_email_results currently: {} ".format(request.session['auto_email_results'])
-    if 'in_progress' not in request.session:
-        initiate_task_session(request.session, PRICES)
-        start_timestamp = time()
-        request.session['start_timestamp'] = start_timestamp
-    # reqeust.session['in_progress'] WILL be false, so this will display the directions page AS INTENDED
-
-    elif request.session['in_progress']:
-        if 'auto_email_results' not in request.session or 'participant_id' not in request.session or 'researcher_email' not in request.session:
-            request.session.flush()
-            clear_session(request)
-            request.session.modified = True
-            messages.warning(request, 'Attention! If you used a link to get here, please try it one more time')
-            return redirect('/research/')
-
-        else:
-            auto_email_results = request.session['auto_email_results']
-            participant_id = request.session['participant_id']
-            researcher_email = request.session['researcher_email']
-            request.session.flush()
-            clear_session(request)
-            request.session.modified = True
-            request.session['researcher_email'] = researcher_email
-            request.session['participant_id'] = participant_id
-            request.session['auto_email_results'] = auto_email_results
-            request.session.modified = True
-            return redirect('/research/instructions')
-
-    # else:
-    #     response_data = {}
-    #     response_data['result'] = 'error'
-    #     response_data['message'] = 'Some error message'
-    #     context = {
-    #         "error_message": "please press the reset button"
-    #     }
-    #     return render(request, 'error_page.html', context)
-
+    # if 'in_progress' not in request.session:
+    #     initiate_task_session(request.session, PRICES)
+    #     start_timestamp = time()
+    #     request.session['start_timestamp'] = start_timestamp
+    # # reqeust.session['in_progress'] WILL be false, so this will display the directions page AS INTENDED
+    #
+    # elif request.session['in_progress']:
+    #     if 'auto_email_results' not in request.session or 'participant_id' not in request.session or 'researcher_email' not in request.session:
+    #         request.session.flush()
+    #         clear_session(request)
+    #         request.session.modified = True
+    #         messages.warning(request, 'Attention! If you used a link to get here, please try it one more time')
+    #         return redirect('/research/')
+    #
+    #     else:
+    #         auto_email_results = request.session['auto_email_results']
+    #         participant_id = request.session['participant_id']
+    #         researcher_email = request.session['researcher_email']
+    #         request.session.flush()
+    #         clear_session(request)
+    #         request.session.modified = True
+    #         request.session['researcher_email'] = researcher_email
+    #         request.session['participant_id'] = participant_id
+    #         request.session['auto_email_results'] = auto_email_results
+    #         request.session.modified = True
+    #         return redirect('/research/instructions')
+    #
+    # # else:
+    # #     response_data = {}
+    # #     response_data['result'] = 'error'
+    # #     response_data['message'] = 'Some error message'
+    # #     context = {
+    # #         "error_message": "please press the reset button"
+    # #     }
+    # #     return render(request, 'error_page.html', context)
+    #
     context = {
         'task': get_task_instructions(),
     }
@@ -259,18 +259,33 @@ def manual_input(request):
 
 def begin_task_with_url_params(request, researcher_email='research@philspelman.com', participant_id='none',
                                auto_email_results='True'):
+
+    # check to see if the task was already started
+    if 'in_progress' in request.session:
+        # todo: test the stuff in session against the newly received info
+        print 'in_progress is ALREADY in the session...reset it'
+        request.session.flush()
+        clear_session(request)
+        request.session.modified = True
+        print 'session has been flushed'
+
     if auto_email_results == 'True':
         auto_email_results = True
     else:
-        # print "setting auto_email_results to false"
         auto_email_results = False
 
-    request.session['auto_email_results'] = auto_email_results
-    request.session['participant_id'] = participant_id
-    request.session['researcher_email'] = researcher_email
-    # print "researcher email: {}".format(researcher_email)
-    request.session.modified = True
-    return redirect("/research/instructions")
+    if 'in_progress' not in request.session:
+        print "in_progress is not in session: beginning new session"
+        initiate_task_session(request.session, PRICES)
+        start_timestamp = time()
+        request.session['start_timestamp'] = start_timestamp
+        request.session['researcher_email'] = researcher_email
+        request.session['participant_id'] = participant_id
+        request.session['auto_email_results'] = auto_email_results
+        request.session.modified = True
+
+    return redirect('/research/instructions')
+
 
 
 # in_progress redirects here

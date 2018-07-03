@@ -5,14 +5,14 @@
 
 
     {{ value|linebreaks }}
-    <div class="scenario_instructions text-center">
+    <div class="scenario_instructions text-center col-md-11">
        <h3>
            {{ task.individual_price_level_prompt }}
-       </h3> <br/>
+       </h3>
+        <br/>
         <span class="price_level">
         {{ task.individual_price_level }}
         </span>
-    </div>
     <br/>
 
 {#    <form action="/task/process_form/" method="post" enctype="multipart/form-data" class="text-center">#}
@@ -28,6 +28,8 @@
         </div><br/>
         <button type="submit" class="btn btn-primary">Next</button>
     </form>
+        </div>
+
 <br/>
 {#    <h3>final</h3>#}
 {#    <form name='quantity_response_form' action="/task/process_form" method="POST" enctype="multipart/form-data">#}
