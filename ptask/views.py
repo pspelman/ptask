@@ -48,15 +48,35 @@ def instructions_view(request):
         request.session['start_timestamp'] = start_timestamp
     # reqeust.session['in_progress'] WILL be false, so this will display the directions page AS INTENDED
 
-    if request.session['in_progress']:
-        # if task is already in progress then return to next item
-        response_data = {}
-        response_data['result'] = 'error'
-        response_data['message'] = 'Some error message'
-        context = {
-            "error_message": "please press the reset button"
-        }
-        return render(request, 'error_page.html', context)
+    elif request.session['in_progress']:
+        if 'auto_email_results' not in request.session or 'participant_id' not in request.session or 'researcher_email' not in request.session:
+            request.session.flush()
+            clear_session(request)
+            request.session.modified = True
+            messages.warning(request, 'Attention! If you used a link to get here, please try it one more time')
+            return redirect('/research/')
+
+        else:
+            auto_email_results = request.session['auto_email_results']
+            participant_id = request.session['participant_id']
+            researcher_email = request.session['researcher_email']
+            request.session.flush()
+            clear_session(request)
+            request.session.modified = True
+            request.session['researcher_email'] = researcher_email
+            request.session['participant_id'] = participant_id
+            request.session['auto_email_results'] = auto_email_results
+            request.session.modified = True
+            return redirect('/research/instructions')
+
+    # else:
+    #     response_data = {}
+    #     response_data['result'] = 'error'
+    #     response_data['message'] = 'Some error message'
+    #     context = {
+    #         "error_message": "please press the reset button"
+    #     }
+    #     return render(request, 'error_page.html', context)
 
     context = {
         'task': get_task_instructions(),

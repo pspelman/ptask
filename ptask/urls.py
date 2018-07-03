@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^$', include(task_urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^favicon\.ico$', favicon_view),
+    url(r'^', include(task_urls)),
 ]
 
 handler404 = views.error404
