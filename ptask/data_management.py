@@ -25,20 +25,20 @@ def send_results(request):
         if participant_id == "none":
             participant_id = "DEMO PARTICIPANT"
 
-        results_csv = make_csv(request)
+        if researcher_email != "research@philspelman.com" and researcher_email != "researcher@someuniversity.edu":
+            results_csv = make_csv(request)
+            message_subject = "Purchase task | Participant - {}".format(participant_id)
+            message_body = "Results are attached for participant: {}".format(participant_id)
+            # THE FROM FIELD SHOULD STAY THE SAME - IT IS FROM MY RESEARCH PLATFORM
+            message_from_email_field = "research@philspelman.com"
+            to_email = researcher_email
+            results_file_name = "{}_results.csv".format(participant_id)
 
-        message_subject = "Purchase task | Participant - {}".format(participant_id)
-        message_body = "Results are attached for participant: {}".format(participant_id)
-        # THE FROM FIELD SHOULD STAY THE SAME - IT IS FROM MY RESEARCH PLATFORM
-        message_from_email_field = "research@philspelman.com"
-        to_email = researcher_email
-        results_file_name = "{}_results.csv".format(participant_id)
+            results_email = EmailMessage(message_subject, message_body, message_from_email_field, [to_email])
+            results_email.attach(results_file_name, results_csv.getvalue(), 'text/csv')
 
-        results_email = EmailMessage(message_subject, message_body, message_from_email_field, [to_email])
-        results_email.attach(results_file_name, results_csv.getvalue(), 'text/csv')
-
-        # TODO: re-enable email when ready
-        # results_email.send(False)
+            # DONE: re-enable email when ready
+            results_email.send(False)
 
         request.session['email_sent'] = True
         request.session.modified = True
