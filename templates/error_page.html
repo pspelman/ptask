@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 
-    Error was detected:
-    {{ error_message }}
+    <br>
+    <div class="offset-2">
+
+        <div class="alert alert-info col-7" style="text-align: center; font-weight: bolder;">
+            Notice:
+            {{ error_message }}
+        </div>
+    </div>
 
 {% endblock %}

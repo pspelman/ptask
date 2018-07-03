@@ -19,7 +19,8 @@ from django.views.generic import RedirectView
 
 import views
 
-from data_management import send_results, make_csv
+from data_management import send_results, download_results
+
 favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 # from urls import urlpatterns
 
@@ -35,10 +36,16 @@ urlpatterns = [
     url(r'^logout', views.logout_view),
     url(r'^(?P<researcher_email>[0-9]+)/(begin_task_with_url_params)', views.begin_task_with_url_params),
     url(ur'^task/(?P<researcher_email>.*)/$', views.begin_task_with_url_params),
-    url(ur'^task/(?P<researcher_email>.*)/(?P<participant_id>[0-9]+)', views.begin_task_with_url_params),
-    url(ur'^task/?researcher_email=(?P<researcher_email>.*)&participant_id=(?P<participant_id>[0-9]+)',
+    url(ur'^task/(?P<researcher_email>.*)/(?P<participant_id>[0-9]+)$', views.begin_task_with_url_params),
+    url(ur'^task/(?P<researcher_email>.*)/(?P<participant_id>[0-9]+)/(?P<auto_email_results>.*)', views.begin_task_with_url_params),
+    url(ur'^task/?researcher_email=(?P<researcher_email>.*)&participant_id=(?P<participant_id>[0-9]+)$',
+        views.begin_task_with_url_params),
+    url(ur'^task/?researcher_email=(?P<researcher_email>.*)&participant_id=(?P<participant_id>[0-9]+)&auto_email_results=(?P<auto_email_results>.*)',
         views.begin_task_with_url_params),
     url(ur'^task/manual_input', views.manual_input),
+    url(r'send_results', send_results, name='send_results'),
+    url(r'download_results', download_results, name='download_results'),
+
 ]
 
 handler404 = views.error404

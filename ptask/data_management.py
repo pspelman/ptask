@@ -1,44 +1,61 @@
 import StringIO
 import csv
-from django.core.mail import EmailMessage
+
+from django.contrib import messages
+from django.core import mail
+from django.core.mail import EmailMessage, send_mail
 from django.http import JsonResponse, HttpResponse
+from django.shortcuts import redirect
+
 from methods import make_JSON
+
+def download_results(request):
+    return make_csv(request)
+
+
+def get_notification_email():
+    pass
 
 
 def send_results(request):
     participant_id = request.session['participant_id']
     researcher_email = request.session['researcher_email']
 
+    if not request.session['email_sent']:
+        if participant_id == "none":
+            participant_id = "DEMO PARTICIPANT"
 
-    email = EmailMessage(
-        'Hello',
-        'Body goes here',
-        'from@example.com',
-        ['to1@example.com', 'to2@example.com'],
-        ['bcc@example.com'],
-        reply_to=['another@example.com'],
-        headers={'Message-ID': 'foo'},
-    )
+        results_csv = make_csv(request)
 
-    # send_mail(
-    #     'Test results',
-    #     'Here is the message.',
-    #     FROM: 'purcahseTask@philspelman.com',
-    #     TO: ['phil.spelman@gmail.com'],
-    #     fail_silently=False,
-    # )
-    task_result_data = {"participant_id": participant_id, "researcher_email": researcher_email,
-                        "raw_data": request.session['raw_data'], "final_indices": request.session['final_indices']}
+        message_subject = "Purchase task | Participant - {}".format(participant_id)
+        message_body = "Results are attached for participant: {}".format(participant_id)
+        # THE FROM FIELD SHOULD STAY THE SAME - IT IS FROM MY RESEARCH PLATFORM
+        message_from_email_field = "research@philspelman.com"
+        to_email = researcher_email
+        results_file_name = "{}_results.csv".format(participant_id)
 
-    ###123### print "getting JSON"
-    result = StringIO.StringIO(make_JSON(task_result_data))
+        results_email = EmailMessage(message_subject, message_body, message_from_email_field, [to_email])
+        results_email.attach(results_file_name, results_csv.getvalue(), 'text/csv')
 
-    # todo: Make CSV file
-    ###123### print result.read()
-    # result.read()
-    return JsonResponse({"message": "trying to send results via email", "raw_data": request.session['raw_data'],
-                         "final_indices": request.session['final_indices']})
+        # Done: re-enable email when ready
+        results_email.send(False)
 
+        request.session['email_sent'] = True
+        request.session.modified = True
+
+        return redirect('/research/completion')
+
+        # return JsonResponse({"message": "done"})
+
+    elif request.session['email_sent']:
+        # messages.success(request, 'Results were already sent to {}.'.format(researcher_email))
+        # print "someone already clicked send. DO NOTHING"
+        return redirect('/research/completion')
+
+    else:
+        messages.success(request, 'The task is complete. Press RESET to begin a new task')
+        return redirect('/research/completion')
+        # return JsonResponse({"message": "try again"})
 
 
 
@@ -55,11 +72,11 @@ def make_csv(request):
     final_indices = request.session['final_indices']
     # print "final indices: ", final_indices
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="apt_results_{}.csv"'.format(file_ending)
+    results = HttpResponse(content_type='text/csv')
+    results['Content-Disposition'] = 'attachment; filename="apt_results_{}.csv"'.format(file_ending)
 
 
-    writer = csv.writer(response)
+    writer = csv.writer(results)
     writer.writerow(['participant_id',  "=\"" + request.session['participant_id'] + "\""])
     writer.writerow(['start_timestamp', request.session['start_timestamp']])
     writer.writerow(['end_timestamp', request.session['end_timestamp']])
@@ -89,4 +106,4 @@ def make_csv(request):
         writer.writerow([trial[0], trial[1], trial[2], trial[1]*trial[2]])
     writer.writerow([])
 
-    return response
+    return results

@@ -3,42 +3,52 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="">
+            <div class="">
+                <div class="">
+                    <small id="disclaimer" class="text-muted alert-danger col-md-12 col-lg-12">
+                        This task is currently under development. Feel free to try it out. Want a feature? <strong>Want
+                        to use it in your study?</strong> <a
+                            href="mailto:phil_spelman@hotmail.com">Contact me</a>.
+                    </small>
+                </div>
+            </div>            <br/>
         <div class="col-sm-12 col-md-10 col-lg-10">
-            <br/>
-            <h3 class="alert alert-warning">No researcher email or participant_id has been set</h3><br/>
-            <p class="col-sm-12 col-md-12">Press continue to demo the task, or enter an email and/or participant_id.<br/>
-                Results will be available for download in CSV format.<br/>
-{#            <h3><a href="/task/researcher@philspelman.com/99999">TASK AND DOWNLOAD</a></h3>#}
+            <h5 class="alert alert-info">Press continue to complete the task (email & id are optional)</h5>
+
+            <p class="col-sm-12 col-md-12">Results will be available for download in CSV format<br/>
+                {#            <h3><a href="/task/researcher@philspelman.com/99999">TASK AND DOWNLOAD</a></h3>#}
+
             </p>
 
-
-        <form name='researcher_and_participant_info_form' action="/research/task/manual_input" method="GET">
+            <form name='researcher_and_participant_info_form' action="/research/task/manual_input" method="GET">
                 {#    {% csrf_token %}#}
 
-            <div class="form-group col-sm-10 col-md-10 col-lg-10 ">
-                <label for="researcher_email">Email address</label>
-                <input type="email"
-                       name="researcher_email"
-                     class="form-control"
-                     id="researcher_email"
-                     ariadescribedby="emailHelp"
-                     placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">
-                    This is where the data will be sent
-                </small>
-                <label for="participant_id">Participant ID</label>
-                <input type="number"
-                       name="participant_id"
-                       class="form-control"
-                       id="participant_id"
-                       placeholder="Enter participant_id"><br>
-            <button type="submit" class="btn btn-primary col-md-6 col-sm-8">Continue</button>
-            </div>
-{#            <div class="checkbox">#}
-{#                <label>#}
-{#                    <input type="checkbox"> Check me out </label>#}
-{#            </div>#}
-        </form>
+                <div class="form-group col-sm-10 col-md-10 col-lg-10 ">
+                    <label for="researcher_email">Email address</label>
+                    <input type="email"
+                           name="researcher_email"
+                           class="form-control"
+                           id="researcher_email"
+                           ariadescribedby="emailHelp"
+                           placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">
+                        This is where the data will be sent
+                    </small>
+                    <label for="participant_id">Participant ID</label>
+                    <input type="number"
+                           name="participant_id"
+                           class="form-control"
+                           id="participant_id"
+                           placeholder="Enter participant_id"><br>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="auto_email_results" value="send"> Email results automatically
+                            <small>(experimental)</small>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary col-md-6 col-sm-8">Continue</button>
+                </div>
+            </form>
 
             <br>
             {#    <a href="make_csv">Make CSV</a>#}
@@ -48,9 +58,9 @@
             {#    </h2>#}
             <p>current timestamp (UTC): {{ theTime }}</p>
             <br/>
-            </div>
+        </div>
     </div>
     <div class="basic">
-    {% include "footer.html" %}
+        {% include "footer.html" %}
     </div>
 {% endblock %}

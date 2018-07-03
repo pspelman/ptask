@@ -101,7 +101,7 @@ def get_demand_indices(consumption_data):
     if consumption_data[0][1] == 0:
         for i in range(1, len(consumption_data)):
             if consumption_data[i][1] > 0:
-                print "line 103 making breakpoint error"
+                # print "line 103 making breakpoint error"
                 breakpoint_error = True
                 break
 
@@ -111,7 +111,7 @@ def get_demand_indices(consumption_data):
         # if something was consumed at price[i], but NOTHING at the next price, the next price is the breakpoint
         for i in range(1, len(consumption_data)):
             if consumption_data[i][1] > 0 and breakpoint_isset:
-                print "line 112 making breakpoint error"
+                # print "line 112 making breakpoint error"
                 breakpoint_error = True
                 break
             elif consumption_data[i][1] == 0:

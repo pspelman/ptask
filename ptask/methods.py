@@ -291,6 +291,8 @@ def get_task_instructions(price_string="$"):
 
 
 def make_JSON(data):
-    return JsonResponse(data)
+    # return JsonResponse(data)
+    # option for less restrictive conversion attempts
+    return JsonResponse(data, safe=False)
 
 

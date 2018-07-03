@@ -4,9 +4,30 @@
     <div class="col-sm-10">
 <br/>
 <h2>You're all done</h2>
-    <form action="make_csv" method="get" >
-    <button type="submit" class="btn btn-success col-sm-4 col-md-4">Download CSV</button>
-    </form>
+        <a href="/research/download_results" class="btn btn-success col-sm-4 col-md-4">Download CSV</a>
+        {% if not auto_email_results %}
+            {% if  not email_sent  %}
+            <a href="/research/send_results" class="btn btn-success col-sm-4 col-md-4">Send via email</a>
+{#            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert" style="margin-top: 1rem;">#}
+{#                </div>#}
+            {% endif %}
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert" style="margin-top: 1rem;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+{#        {% if auto_email_results %}#}
+{#                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert" style="margin-top: 1rem;">#}
+{#                    Results were emailed automatically - You may still download the results via CSV#}
+{#                </div>#}
+{#        {% endif %}#}
+
+
+
 
 {#    <button type="button" onclick="function toggleShowResults() {#}
 {#$('#results').toggle();#}

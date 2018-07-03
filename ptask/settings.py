@@ -81,12 +81,15 @@ WSGI_APPLICATION = 'ptask.wsgi.application'
 # SUB_SITE = "/research/"
 
 # EMAIL STUFF
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
 # ports: 25, 465, or 587
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'Removed for commit'
 EMAIL_HOST_PASSWORD = 'Removed for commit'
 EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'research@philspelman.com'
+
 
 
 
