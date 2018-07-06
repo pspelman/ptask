@@ -16,3 +16,18 @@ class QuantityResponseModel(models.Model):
     text_quantity = models.CharField(max_length=255)
 
 
+class PurchaseTaskModel(models.Model):
+    pass
+    # TODO: add a model for how one purchase task instance should be stored
+    # researcher_email?
+    # participant ID?
+    # timestamp?
+    # prices
+    # quantities (responses)
+    # totals
+    # raw_intensity
+    # raw_omax
+    # raw_pmax
+    # raw_breakpoint
+    #
+
